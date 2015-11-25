@@ -5,14 +5,14 @@
 
 #define RTS_TYPEDEF(name, type)                     \
     struct _struct_align_##name {                   \
-        char c;					                    \
-        type x;					                    \
-    };						                        \
-    const RtsType RTS_TYPE_##name = {	            \
+        char c;                                     \
+        type x;                                     \
+    };                                              \
+    const RtsType RTS_TYPE_##name = {               \
         RTS_TYPE_TAG_##name,                        \
         offsetof(struct _struct_align_##name, x),   \
-        sizeof(type),					            \
-        NULL, NULL    			                    \
+        sizeof(type),                               \
+        NULL, NULL                                  \
     }                                               \
 
 const RtsType RTS_TYPE_VOID = {
