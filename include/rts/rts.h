@@ -8,7 +8,6 @@
 #endif
 
 typedef enum _RtsTypeTag {
-    RTS_TYPE_TAG_VOID = 0,
     RTS_TYPE_TAG_UINT,
     RTS_TYPE_TAG_SINT,
     RTS_TYPE_TAG_CHAR,
@@ -49,7 +48,6 @@ typedef struct _RtsType {
     size_t *offsets;
 } RtsType;
 
-RTS_EXTERN RtsType RTS_TYPE_VOID;
 RTS_EXTERN RtsType RTS_TYPE_UINT;
 RTS_EXTERN RtsType RTS_TYPE_SINT;
 RTS_EXTERN RtsType RTS_TYPE_CHAR;

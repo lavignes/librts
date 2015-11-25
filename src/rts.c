@@ -4,7 +4,7 @@
 
 #include <rts/rts.h>
 
-#define RTS_MAX(lhs, rhs) ((lhs > rhs)? (lhs) : (rhs))
+#define RTS_MAX(lhs, rhs) (((lhs) > (rhs))? (lhs) : (rhs))
 
 #define RTS_TYPEDEF(name, type)                     \
     struct _struct_align_##name {                   \
@@ -17,10 +17,6 @@
         sizeof(type),                               \
         NULL, NULL                                  \
     }                                               \
-
-RtsType RTS_TYPE_VOID = {
-    RTS_TYPE_TAG_VOID, 0, 0, NULL, NULL
-};
 
 RTS_TYPEDEF(SINT, signed int);
 RTS_TYPEDEF(UINT, unsigned int);
@@ -46,7 +42,7 @@ RTS_TYPEDEF(SINT64, int64_t);
 RTS_TYPEDEF(POINTER, void *);
 
 RtsStatus rts_init(RtsType *type) {
-    if (type == NULL || type->tag == RTS_TYPE_TAG_VOID) {
+    if (type == NULL) {
         return RTS_STATUS_BAD_TYPEDEF;
     }
     bool isUnion = type->tag == RTS_TYPE_TAG_UNION;
