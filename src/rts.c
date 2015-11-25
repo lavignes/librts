@@ -2,6 +2,7 @@
 #include <stddef.h>
 
 #include <rts/rts.h>
+#include <inttypes.h>
 
 #define RTS_MAX(lhs, rhs) ((lhs > rhs)? (lhs) : (rhs))
 
@@ -10,14 +11,14 @@
         char c;                                     \
         type x;                                     \
     };                                              \
-    const RtsType RTS_TYPE_##name = {               \
+    RtsType RTS_TYPE_##name = {                     \
         RTS_TYPE_TAG_##name,                        \
         offsetof(struct _struct_align_##name, x),   \
         sizeof(type),                               \
         NULL, NULL                                  \
     }                                               \
 
-const RtsType RTS_TYPE_VOID = {
+RtsType RTS_TYPE_VOID = {
     RTS_TYPE_TAG_VOID, 0, 0, NULL, NULL
 };
 
@@ -69,16 +70,28 @@ RtsStatus rts_init(RtsType *type) {
             return RTS_STATUS_BAD_TYPEDEF;
         }
         max_align = RTS_MAX(max_align, element->alignment);
-        size_t padding = offset % element->alignment;
+        imaxdiv_t maxdiv = imaxdiv(offset, element->alignment);
+        (void)maxdiv;
+        size_t remainder = offset % element->alignment;
+        size_t padding = remainder ? element->alignment - remainder : 0;
         offset += padding;
         type->offsets[i] = offset;
+        offset += element->size;
         i++;
         element = elements[i];
     }
 
     // Apply trailing padding
     type->alignment = max_align;
-    size_t padding = offset % max_align;
+    size_t remainder = offset % max_align;
+    size_t padding = remainder ? max_align - remainder : 0;
     type->size = offset + padding;
+    return RTS_STATUS_OK;
+}
+
+RtsStatus rts_init_from_string(RtsType **type, const char *str, size_t len) {
+    if (type == NULL || str == NULL || len == 0) {
+        return RTS_STATUS_BAD_TYPEDEF;
+    }
     return RTS_STATUS_OK;
 }
