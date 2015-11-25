@@ -45,7 +45,7 @@ typedef struct _RtsType {
     size_t alignment;
     size_t size;
     struct _RtsType **elements;
-    ptrdiff_t *offsets;
+    size_t *offsets;
 } RtsType;
 
 RTS_EXTERN const RtsType RTS_TYPE_VOID;

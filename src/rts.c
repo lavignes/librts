@@ -3,6 +3,8 @@
 
 #include <rts/rts.h>
 
+#define RTS_MAX(lhs, rhs) ((lhs > rhs)? (lhs) : (rhs))
+
 #define RTS_TYPEDEF(name, type)                     \
     struct _struct_align_##name {                   \
         char c;                                     \
@@ -43,5 +45,40 @@ RTS_TYPEDEF(SINT64, int64_t);
 RTS_TYPEDEF(POINTER, void *);
 
 RtsStatus rts_init(RtsType *type) {
+    if (type == NULL) {
+        return RTS_STATUS_BAD_TYPEDEF;
+    }
+    if (type->tag != RTS_TYPE_TAG_STRUCT) {
+        return RTS_STATUS_OK;
+    }
+
+    RtsType **elements = type->elements;
+    if (elements == NULL) {
+        return RTS_STATUS_BAD_TYPEDEF;
+    }
+
+    size_t i = 0;
+    size_t offset = 0;
+    size_t max_align = 0;
+    RtsType *element = elements[i];
+    if (element == NULL) { // Empty struct
+        return RTS_STATUS_BAD_TYPEDEF;
+    }
+    while (element != NULL) { // Align each element
+        if (rts_init(element) != RTS_STATUS_OK) {
+            return RTS_STATUS_BAD_TYPEDEF;
+        }
+        max_align = RTS_MAX(max_align, element->alignment);
+        size_t padding = offset % element->alignment;
+        offset += padding;
+        type->offsets[i] = offset;
+        i++;
+        element = elements[i];
+    }
+
+    // Apply trailing padding
+    type->alignment = max_align;
+    size_t padding = offset % max_align;
+    type->size = offset + padding;
     return RTS_STATUS_OK;
 }
