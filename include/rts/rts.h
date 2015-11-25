@@ -1,6 +1,8 @@
 #ifndef LIBRTS_H
 #define LIBRTS_H
 
+#include <stddef.h>
+
 #ifdef __cplusplus
 #define RTS_EXTERN extern "C"
 #else
@@ -72,8 +74,6 @@ RTS_EXTERN RtsType RTS_TYPE_UINT64;
 RTS_EXTERN RtsType RTS_TYPE_SINT64;
 RTS_EXTERN RtsType RTS_TYPE_POINTER;
 
-RTS_EXTERN RtsStatus rts_init(RtsType *type);
-
-RTS_EXTERN RtsStatus rts_init_from_string(RtsType **type, const char *str, size_t len);
+RTS_EXTERN RtsStatus rts_type_init(RtsType *type);
 
 #endif /* LIBRTS_H */

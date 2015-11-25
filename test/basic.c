@@ -19,7 +19,7 @@ CL_SPEC(basic) {
     test_type.elements = elements;
     test_type.offsets = offsets;
 
-    cl_assert(rts_init(&test_type) == RTS_STATUS_OK);
+    cl_assert(rts_type_init(&test_type) == RTS_STATUS_OK);
 
     cl_assert(test_type.size == sizeof(struct s));
 

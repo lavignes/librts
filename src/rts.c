@@ -41,7 +41,7 @@ RTS_TYPEDEF(UINT64, uint64_t);
 RTS_TYPEDEF(SINT64, int64_t);
 RTS_TYPEDEF(POINTER, void *);
 
-RtsStatus rts_init(RtsType *type) {
+RtsStatus rts_type_init(RtsType *type) {
     if (type == NULL) {
         return RTS_STATUS_BAD_TYPEDEF;
     }
@@ -63,7 +63,7 @@ RtsStatus rts_init(RtsType *type) {
         return RTS_STATUS_BAD_TYPEDEF;
     }
     while (element != NULL) { // Align each element
-        if (rts_init(element) != RTS_STATUS_OK) {
+        if (rts_type_init(element) != RTS_STATUS_OK) {
             return RTS_STATUS_BAD_TYPEDEF;
         }
         size_t alignment = element->alignment;
