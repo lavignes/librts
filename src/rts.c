@@ -2,7 +2,6 @@
 #include <stddef.h>
 
 #include <rts/rts.h>
-#include <inttypes.h>
 
 #define RTS_MAX(lhs, rhs) ((lhs > rhs)? (lhs) : (rhs))
 
@@ -70,8 +69,6 @@ RtsStatus rts_init(RtsType *type) {
             return RTS_STATUS_BAD_TYPEDEF;
         }
         max_align = RTS_MAX(max_align, element->alignment);
-        imaxdiv_t maxdiv = imaxdiv(offset, element->alignment);
-        (void)maxdiv;
         size_t remainder = offset % element->alignment;
         size_t padding = remainder ? element->alignment - remainder : 0;
         offset += padding;
