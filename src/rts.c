@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdbool.h>
 #include <stddef.h>
 
 #include <rts/rts.h>
@@ -45,10 +46,11 @@ RTS_TYPEDEF(SINT64, int64_t);
 RTS_TYPEDEF(POINTER, void *);
 
 RtsStatus rts_init(RtsType *type) {
-    if (type == NULL) {
+    if (type == NULL || type->tag == RTS_TYPE_TAG_VOID) {
         return RTS_STATUS_BAD_TYPEDEF;
     }
-    if (type->tag != RTS_TYPE_TAG_STRUCT) {
+    bool isUnion = type->tag == RTS_TYPE_TAG_UNION;
+    if (type->tag != RTS_TYPE_TAG_STRUCT && !isUnion) {
         return RTS_STATUS_OK;
     }
 
@@ -68,12 +70,15 @@ RtsStatus rts_init(RtsType *type) {
         if (rts_init(element) != RTS_STATUS_OK) {
             return RTS_STATUS_BAD_TYPEDEF;
         }
-        max_align = RTS_MAX(max_align, element->alignment);
-        size_t remainder = offset % element->alignment;
-        size_t padding = remainder ? element->alignment - remainder : 0;
-        offset += padding;
-        type->offsets[i] = offset;
-        offset += element->size;
+        size_t alignment = element->alignment;
+        max_align = RTS_MAX(max_align, alignment);
+        if (!isUnion) {
+            size_t remainder = offset % alignment;
+            size_t padding = remainder ? alignment - remainder : 0;
+            offset += padding;
+            type->offsets[i] = offset;
+            offset += element->size;
+        }
         i++;
         element = elements[i];
     }

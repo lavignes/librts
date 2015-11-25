@@ -33,6 +33,7 @@ typedef enum _RtsTypeTag {
     RTS_TYPE_TAG_SINT64,
     RTS_TYPE_TAG_POINTER,
     RTS_TYPE_TAG_STRUCT,
+    RTS_TYPE_TAG_UNION,
 } RtsTypeTag;
 
 typedef enum _RtsStatus {
