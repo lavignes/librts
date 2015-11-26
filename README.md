@@ -26,7 +26,7 @@ struct s {
 }
 ```
 
-High level languages may not know at compile time how to manipulate structs passed to and from C functions. This can make foreign function interfaces cumbersome and non-portable. LibRTS allows you to define C structs (and unions!) at runtime and gives you the ability to manipulate them as part your foreign fuction interface. In fact, libRTS is designed to complement systems that already use [libFFI](https://github.com/atgreen/libffi)!
+High level languages may not know at compile time how to manipulate structs passed to and from C functions. This can make foreign function interfaces cumbersome and non-portable. libRTS allows you to define C structs (and unions!) at runtime and gives you the ability to manipulate them as part your foreign fuction interface. In fact, libRTS is designed to complement systems that already use [libFFI](https://github.com/atgreen/libffi)!
 
 ### The Basics ###
 
@@ -74,7 +74,26 @@ int main(int argc, char **argv) {
 
 ### Installing ###
 
-*TODO: libRTS uses CMake, so standard cmake conventions will install the library*
+libRTS uses CMake to build and install.
+
+* From the librts directory, create a build folder and navigate inside of it:
+```sh
+$ mkdir build
+$ cd build
+```
+* Next use CMake to configure the project for building on your system. This causes CMake to read the `CMakeLists.txt` file in the project root and generate a build enviorment in the current directory:
+```sh
+$ cmake ..
+```
+* Finally, build and install the library:
+```sh
+$ make
+$ sudo make install
+```
+* Additionally, you may unistall using the uninstall target:
+```sh
+$ sudo make uninstall
+```
 
 ### Supported Platforms ###
 
