@@ -90,7 +90,7 @@ $ cmake ..
 $ make
 $ sudo make install
 ```
-* Additionally, you may unistall using the uninstall target:
+* Additionally, you may uninstall using the uninstall target:
 ```sh
 $ sudo make uninstall
 ```
