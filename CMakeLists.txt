@@ -28,6 +28,10 @@ target_include_directories(rts PUBLIC include)
 # Tests
 add_subdirectory(test)
 
+# Install 
+install (TARGETS rts ARCHIVE DESTINATION lib)
+install (FILES "${HEADERS}" DESTINATION include)
+
 add_custom_target(uninstall
     "${CMAKE_COMMAND}" -P "${CMAKE_MODULE_PATH}/uninstall.cmake"
 )
